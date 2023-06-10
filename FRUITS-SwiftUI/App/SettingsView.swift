@@ -11,7 +11,9 @@ struct SettingsView: View {
     
     //MARK: - PROPERTIES
     @Environment(\.presentationMode) var presentationMode
-
+    @State private var isRestarted: Bool = false
+    @AppStorage("isOnboarding") var isOnboarding: Bool = false
+    
     //MARK: - BODY
     var body: some View {
         NavigationStack {
@@ -35,7 +37,36 @@ struct SettingsView: View {
                         LabelView(labelText: "Fructus", labelImage: "info.circle")
                     }
                     //MARK: - SECTION 2
-                    
+                    GroupBox {
+                        Divider()
+                            .padding(.vertical, 4)
+                        VStack(alignment: .center, spacing: 20) {
+                            Text("Most fruits are natually low in fat, sodium, and calories. Fruits are sources of many essential nutrients, including potassium, dietry fiber, vitamins, and much more.")
+                                .padding(.vertical, 8)
+                                .frame(minHeight: 60)
+                                .layoutPriority(1)
+                                .font(.footnote)
+                                .multilineTextAlignment(.leading)
+                            Toggle(isOn: $isOnboarding) {
+                                if isOnboarding {
+                                    Text("RESTARTED")
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.green)
+                                } else {
+                                    Text("RESTART")
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.secondary)
+                                }
+                            } //: TOGGLE
+                            .padding()
+                            .background(
+                                Color(UIColor.tertiarySystemBackground)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+                            )
+                        } //: VSTACK
+                    } label: {
+                        LabelView(labelText: "CUSTOMIZATION", labelImage: "paintbrush")
+                    }
                     //MARK: - SECTION 3
                     GroupBox {
                         SettingsRowView(name: "Developer", content: "Shivang Mishra")
@@ -49,16 +80,16 @@ struct SettingsView: View {
                         LabelView(labelText: "Application", labelImage: "apps.iphone")
                     }
                 } //: VSTACK
-            } //: ScrollView
-            .navigationTitle("Settings")
-            .padding()
-            .toolbar {
-                Button {
-                    presentationMode.wrappedValue.dismiss()
-                } label: {
-                    Image(systemName: "xmark")
+                .navigationTitle("Settings")
+                .toolbar {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
                 }
-            }
+            } //: ScrollView
+            .padding()
         } //: NavigationStack
     }
 }
